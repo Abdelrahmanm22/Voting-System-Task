@@ -57,4 +57,8 @@ class User extends Authenticatable
     {
         return $this->hasMany(Vote::class, 'voter_id');
     }
+
+    public function canVote(){
+        return $this->status==='approved';
+    }
 }
