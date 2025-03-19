@@ -7,8 +7,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Tymon\JWTAuth\Contracts\JWTSubject;
 
-class User extends Authenticatable
+class User extends Authenticatable implements JWTSubject
 {
     use HasApiTokens, HasFactory, Notifiable;
 
@@ -25,6 +26,7 @@ class User extends Authenticatable
         'status',
         'role'
     ];
+//    public $timestamps = false;
 
     /**
      * The attributes that should be hidden for serialization.
@@ -34,6 +36,9 @@ class User extends Authenticatable
     protected $hidden = [
         'password',
         'remember_token',
+        'created_at',
+        'updated_at',
+        'email_verified_at'
     ];
 
     /**
@@ -46,9 +51,10 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
-    //We may use the polymorphic relationship allows flexibility if you want to extend voting to other entities in the future (e.g., Post, Comment, or another model).
-    //but Slightly more complex to set up and query due to the type columns, (((especially if you’re only dealing with User for now))),
-    //and polymorphic relationships require resolving the type column, which can be marginally slower than direct foreign keys.
+    /**We may use the polymorphic relationship allows flexibility if you want to extend voting to other entities in the future (e.g., Post, Comment, or another model).
+    but Slightly more complex to set up and query due to the type columns, (((especially if you’re only dealing with User for now))),
+    and polymorphic relationships require resolving the type column, which can be marginally slower than direct foreign keys.
+     */
     public function votesReceived()
     {
         return $this->hasMany(Vote::class, 'candidate_id');
@@ -60,5 +66,15 @@ class User extends Authenticatable
 
     public function canVote(){
         return $this->status==='approved';
+    }
+
+    public function getJWTIdentifier()
+    {
+        return $this->getKey();
+    }
+
+    public function getJWTCustomClaims()
+    {
+        return [];
     }
 }

@@ -4,11 +4,12 @@ namespace App\Services;
 
 use App\Repositories\Concretes\UserRepository;
 use App\Repositories\Concretes\VoteRepository;
+use App\Repositories\Interfaces\VoteRepositoryInterface;
 
 class VoteService
 {
     protected $_voteRepository;
-    public function __construct(VoteRepository $voteRepository , UserRepository $userRepository){ //Use Dependency injection
+    public function __construct(VoteRepositoryInterface  $voteRepository ){ //Use Dependency injection
         $this->_voteRepository = $voteRepository;
     }
 
@@ -20,12 +21,14 @@ class VoteService
             throw new \Exception('User not approved for voting');
         }
 
+
         //Check if Cannot vote for yourself
-        if ($voterId===$candidateId) {
+        if ($voterId==$candidateId) {
             throw new \Exception('Cannot vote for yourself');
         }
 
         //Check if Voter have already voted for this candidate
+//        return $this->_voteRepository->userHasVoted($voterId,$candidateId);
         if($this->_voteRepository->userHasVoted($voterId,$candidateId)){
             throw new \Exception('Already voted for this candidate');
         }

@@ -4,4 +4,5 @@ interface UserRepositoryInterface
 {
     public function create(array $data);
     public function findById($id);
+    public function findApprovedUsers();
 }

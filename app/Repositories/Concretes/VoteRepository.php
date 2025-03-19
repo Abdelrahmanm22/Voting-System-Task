@@ -19,6 +19,6 @@ class VoteRepository implements VoteRepositoryInterface
 
     public function userHasVoted($voterId, $candidateId)
     {
-        Vote::where(['voter_id' => $voterId, 'candidate_id' => $candidateId])->exists();
+        return Vote::where(['voter_id' => $voterId, 'candidate_id' => $candidateId])->exists();
     }
 }
