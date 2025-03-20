@@ -23,15 +23,19 @@ use Illuminate\Support\Facades\Route;
 //})->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::group(['prefix'=>'dashboard','middleware'=>'auth'],function(){
-    Route::get('/home',[\App\Http\Controllers\Web\AdminController::class,'index'])->name('home');
-    Route::get('/users', [App\Http\Controllers\Web\AdminController::class, 'users'])->name('admin.users');
-    Route::post('/users/{id}/status', [App\Http\Controllers\Web\AdminController::class, 'updateStatus'])->name('admin.users.status');
+
+    Route::group(['middleware'=>'admin'],function(){
+        Route::get('/home',[\App\Http\Controllers\Web\AdminController::class,'index'])->name('home');
+        Route::get('/users', [App\Http\Controllers\Web\AdminController::class, 'users'])->name('admin.users');
+        Route::post('/users/{id}/status', [App\Http\Controllers\Web\AdminController::class, 'updateStatus'])->name('admin.users.status');
+    });
+
 });
 
-Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-});
+//Route::middleware('auth')->group(function () {
+//    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+//    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+//    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+//});
 
 require __DIR__.'/auth.php';
