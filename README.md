@@ -8,6 +8,11 @@ The **User Voting System** is a web and API-based application designed to allow 
 - **Database Relationships**: Used a direct foreign key relationship between the User and Vote models instead of a polymorphic relationship. While polymorphic relationships offer flexibility for future extensions (e.g., voting on posts or comments), I opted for simplicity and performance since the current scope only involves voting between users. Polymorphic relationships are more complex to set up and query due to the type column and can be marginally slower, which wasn’t justified for this use case.
 - **Initial Setup**: Created a `UserSeeder` to populate the database with an admin user (email: `moamen@example.com`, password: `12345678`) and sample users for testing.
 - **Code Quality**: Refactored the `vote` function in `VoteService` to adhere to the **Open/Closed Principle (OCP)** using the **Strategy Pattern**. This ensures the system can accommodate new voting rules without modifying existing code.
+- **Middleware Implementation**: Created custom middlewares to enforce authentication, authorization, and user approval checks:
+  - **`AdminMiddleware`**: Restricts access to admin-only routes (e.g., user management and voting statistics). It checks if the authenticated user has the `admin` role, returning a 403 error with a custom view if not.
+  - **`CheckUserApproved` (Web)**: Ensures that only approved users can access voting features on the web interface. If the user’s status is not `approved`, it returns a 403 error with a custom error view.
+  - **`JwtMiddleware`**: Handles JWT authentication for API requests. It validates the token, catching exceptions for invalid, expired, or missing tokens, and returns appropriate error responses using a custom `ApiResponseTrait`.
+  - **`CheckUserApproved` (API)**: Similar to the web version but tailored for API routes. It ensures only approved users can vote or interact with the API, returning a JSON error response if the user is not approved.
 - **Tech Stack**: Built with Laravel (Blade + API), Bootstrap for frontend styling, MySQL for the database, JWT for API authentication, and Laravel Breeze for web authentication.
 
 ## System Requirements
