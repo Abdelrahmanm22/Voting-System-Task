@@ -28,11 +28,14 @@ class VoteService
         }
 
         //Check if Voter have already voted for this candidate
-//        return $this->_voteRepository->userHasVoted($voterId,$candidateId);
         if($this->_voteRepository->userHasVoted($voterId,$candidateId)){
             throw new \Exception('Already voted for this candidate');
         }
 
         return $this->_voteRepository->createVote($voterId,$candidateId);
+    }
+    public function getUsersWithVoteCounts()
+    {
+        return $this->_voteRepository->usersWithVoteCounts();
     }
 }

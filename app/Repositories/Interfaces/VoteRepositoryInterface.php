@@ -7,4 +7,6 @@ interface VoteRepositoryInterface
     public function createVote($voterId, $candidateId);
     public function canVote($userId);
     public function userHasVoted($voterId, $candidateId);
+
+    public function usersWithVoteCounts();
 }

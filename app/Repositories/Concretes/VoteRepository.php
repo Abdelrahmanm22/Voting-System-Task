@@ -21,4 +21,11 @@ class VoteRepository implements VoteRepositoryInterface
     {
         return Vote::where(['voter_id' => $voterId, 'candidate_id' => $candidateId])->exists();
     }
+    public function usersWithVoteCounts()
+    {
+        return User::where('role', '!=', 'admin')
+            ->withCount('votesReceived')
+            ->orderBy('votes_received_count', 'desc')
+            ->get();
+    }
 }

@@ -22,4 +22,13 @@ class UserService
     public function getApprovedUsers() {
         return $this->_userRepository->findApprovedUsers()->where('id', '!=', auth()->id());
     }
+    public function getAllNonAdminUsers()
+    {
+        return $this->_userRepository->getAllNonAdminUsers();
+    }
+
+    public function updateUserStatus($id, $status)
+    {
+        return $this->_userRepository->updateStatus($id, $status);
+    }
 }

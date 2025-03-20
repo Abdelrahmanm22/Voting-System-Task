@@ -18,4 +18,17 @@ class UserRepository implements UserRepositoryInterface
     public function findApprovedUsers() {
         return User::where('status', 'approved')->get();
     }
+    public function getAllNonAdminUsers()
+    {
+        return User::where('role', '!=', 'admin')
+            ->orderBy('created_at', 'desc')
+            ->get();
+    }
+
+    public function updateStatus($id, $status)
+    {
+        $user = User::findOrFail($id);
+        $user->status = $status;
+        return $user->save();
+    }
 }
