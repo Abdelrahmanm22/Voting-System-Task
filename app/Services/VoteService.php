@@ -9,13 +9,16 @@ use App\Repositories\Interfaces\VoteRepositoryInterface;
 class VoteService
 {
     protected $_voteRepository;
-    public function __construct(VoteRepositoryInterface  $voteRepository ){ //Use Dependency injection
+    protected $voteRules;
+    public function __construct(VoteRepositoryInterface  $voteRepository,array $voteRules ){ //Use Dependency injection
         $this->_voteRepository = $voteRepository;
+        $this->voteRules = $voteRules;
     }
 
+    /**
+     This function violate Open/Closed Principle (OCP) , To Fix that,we can use the ((Strategy Pattern)). This allows us to add new voting rules without modifying the existing code.
     public function vote($voterId,$candidateId)
     {
-
         //Check if User not approved for voting
         if (!$this->_voteRepository->canVote($voterId) || !$this->_voteRepository->canVote($candidateId)) {
             throw new \Exception('User not approved for voting');
@@ -34,6 +37,19 @@ class VoteService
 
         return $this->_voteRepository->createVote($voterId,$candidateId);
     }
+     *
+     * */
+
+    ///////New vote function///////////
+    public function vote($voterId, $candidateId)
+    {
+        // Apply all vote rules dynamically
+        foreach ($this->voteRules as $rule) {
+            $rule->validate($voterId, $candidateId);
+        }
+        return $this->_voteRepository->createVote($voterId, $candidateId);
+    }
+
     public function getUsersWithVoteCounts()
     {
         return $this->_voteRepository->usersWithVoteCounts();
