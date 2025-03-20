@@ -1,66 +1,107 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# User Voting System
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## Project Description
+The **User Voting System** is a web and API-based application designed to allow users to register, log in, and vote for other users, with an admin panel to manage users and monitor voting statistics. This project was developed as per the provided specifications, utilizing modern development practices and design patterns to ensure scalability, maintainability, and flexibility.
 
-## About Laravel
+### What I Did in This Project
+- **Architecture**: Implemented the **Repository Design Pattern** to abstract database operations and improve code maintainability, alongside **Service Classes** to encapsulate business logic for voting and user management.
+- **Database Relationships**: Used a direct foreign key relationship between the User and Vote models instead of a polymorphic relationship. While polymorphic relationships offer flexibility for future extensions (e.g., voting on posts or comments), I opted for simplicity and performance since the current scope only involves voting between users. Polymorphic relationships are more complex to set up and query due to the type column and can be marginally slower, which wasn’t justified for this use case.
+- **Initial Setup**: Created a `UserSeeder` to populate the database with an admin user (email: `moamen@example.com`, password: `12345678`) and sample users for testing.
+- **Code Quality**: Refactored the `vote` function in `VoteService` to adhere to the **Open/Closed Principle (OCP)** using the **Strategy Pattern**. This ensures the system can accommodate new voting rules without modifying existing code.
+- **Tech Stack**: Built with Laravel (Blade + API), Bootstrap for frontend styling, MySQL for the database, JWT for API authentication, and Laravel Breeze for web authentication.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## System Requirements
+- **PHP**: 8.1 or higher
+- **Composer**: Latest version
+- **Node.js & NPM**: For frontend assets (if needed)
+- **Git**: For cloning the repository
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Installation Guide
+Follow these steps to set up the project locally:
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+1. **Clone the Repository**
+   ```bash
+   git clone https://github.com/Abdelrahmanm22/Voting-System-Task.git
+   cd Voting-System-Task
+   ```
 
-## Learning Laravel
+2. **Install Dependencies**
+   ```bash
+   composer install
+   ```
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+3. **Configure Environment**
+   - Copy the `.env.example` file to `.env`:
+     ```bash
+     cp .env.example .env
+     ```
+   - Update the `.env` file with your database credentials:
+     ```
+     DB_CONNECTION=mysql
+     DB_HOST=127.0.0.1
+     DB_PORT=3306
+     DB_DATABASE=votingdb
+     DB_USERNAME=your_username
+     DB_PASSWORD=your_password
+     ```
+   - Generate an application key:
+     ```bash
+     php artisan key:generate
+     ```
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+4. **Run Migrations and Seeders**
+   ```bash
+   php artisan migrate
+   php artisan db:seed
+   ```
+   This will create the database tables and populate them with an admin user (`moamen@example.com`, `12345678`) and sample users.
 
-## Laravel Sponsors
+5. **Run the Application**
+   ```bash
+   php artisan serve
+   ```
+   Access the app at `http://localhost:8000`.
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+## Configuration Steps
+- Ensure the `.env` file is correctly configured with your database details.
+- For API usage, test the endpoints (e.g., `/api/register`, `/api/login`) using tools like Postman with the JWT token after login.
 
-### Premium Partners
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+## Running the Project
+- **Web Interface**: Visit `http://localhost:8000` after starting the server.
+- **API**: Use the provided endpoints (e.g., `GET /api/users`, `POST /api/vote`) with a valid JWT token.
+- **Admin Access**: Log in with `moamen@example.com` and `12345678` to manage users and view statistics.
 
-## Contributing
+## Sample Environment Variables
+```env
+APP_NAME="User Voting System"
+APP_ENV=local
+APP_KEY= (generated by php artisan key:generate)
+APP_DEBUG=true
+APP_URL=http://localhost
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=votingdb
+DB_USERNAME=root
+DB_PASSWORD=
 
-## Code of Conduct
+JWT_SECRET= (generated by php artisan jwt:secret)
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+---
 
-## Security Vulnerabilities
+**Refactoring with Strategy Pattern and OCP**  
+   - **Why It Matters**: The original `vote` function in `VoteService` violated the Open/Closed Principle (OCP), meaning new voting rules would require modifying existing code. I refactored it using the Strategy Pattern, allowing new rules to be added via separate classes without altering the core logic.
+   - **Impact**: This adherence to SOLID principles enhances the system’s maintainability and extensibility, reflecting my commitment to writing high-quality, professional code.
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+My work goes meeting basic requirements. I incorporated design patterns, made pragmatic decisions about database relationships, and ensured a smooth setup process—all of which demonstrate my technical expertise, practical judgment, and dedication to delivering efficient, robust solutions.
 
-## License
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Thank you for considering my efforts!  
+Best regards,  
+[Abdelrahman]  
+
+--- 
