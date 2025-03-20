@@ -25,7 +25,8 @@ class UserSeeder extends Seeder
             'email'=>'abdelrahman@example.com',
             'photo'=>'abdelrahman.jpg',
             'password'=>Hash::make('12345678'),
-            'role'=>'user'
+            'role'=>'user',
+            'status'=>'approved'
         ]);
         User::create([
             'name'=>'sara',
@@ -38,6 +39,20 @@ class UserSeeder extends Seeder
             'name'=>'salah',
             'email'=>'salah@example.com',
             'photo'=>'salah.jpg',
+            'password'=>Hash::make('12345678'),
+            'role'=>'user'
+        ]);
+        User::create([
+            'name'=>'omar',
+            'email'=>'omarmarmoush@example.com',
+            'photo'=>'marmoush.jpg',
+            'password'=>Hash::make('12345678'),
+            'role'=>'user'
+        ]);
+        User::create([
+            'name'=>'ali',
+            'email'=>'alimaaloul@example.com',
+            'photo'=>'maaloul.jpg',
             'password'=>Hash::make('12345678'),
             'role'=>'user'
         ]);
