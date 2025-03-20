@@ -16,7 +16,7 @@
                       alt="User Image">
               </div>
               <div class="info">
-{{--                  <a href="#" class="d-block">{{ Auth::user()->name }}</a>--}}
+                  <a href="#" class="d-block">{{ Auth::user()->name }}</a>
               </div>
           </div>
 
@@ -139,7 +139,7 @@
 
                   <li class="nav-item">
                       <a href="#" class="nav-link">
-                          <form action="" method="POST">
+                          <form action="{{route('logout')}}" method="POST">
                               @csrf
                               <button type="submit" class="btn btn-sm btn-outline-primary">Sign out</button>
                           </form>
