@@ -21,17 +21,23 @@ use Illuminate\Support\Facades\Route;
 //    return view('dashboard');
 //})->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::group(['prefix'=>'dashboard','middleware'=>'auth'],function(){
+Route::group(['middleware'=>'auth'],function(){
 
-    Route::group(['middleware'=>'admin'],function(){
+    Route::group(['prefix'=>'dashboard','middleware'=>'admin'],function(){
         Route::get('/home',[\App\Http\Controllers\Web\back\AdminController::class,'index'])->name('home');
         Route::get('/users', [\App\Http\Controllers\Web\back\AdminController::class, 'users'])->name('admin.users');
         Route::post('/users/{id}/status', [\App\Http\Controllers\Web\back\AdminController::class, 'updateStatus'])->name('admin.users.status');
     });
 
+    Route::group(['middleware'=>'web.check.approved'],function(){
+        Route::get('/voting',[\App\Http\Controllers\Web\front\VoteController::class,'index'])
+            ->name('vote.index');
+        Route::post('/vote/{candidateId}', [\App\Http\Controllers\Web\front\VoteController::class, 'vote'])->name('vote.submit');
+    });
+
+
 });
 
-Route::get('/landing',[\App\Http\Controllers\Web\front\VoteController::class,'index'])->name('landing');
 
 //Route::middleware('auth')->group(function () {
 //    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

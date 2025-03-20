@@ -13,7 +13,7 @@
 
         <!-- Preloader -->
         <div class="preloader flex-column justify-content-center align-items-center">
-            <p>Aklam El Arab</p>
+            <p>Orevan Consulting</p>
             <img class="animation__shake" src="{{ URL::asset('back/dist/img/orevan_consulting_logo.jpeg') }}" alt="AdminLTELogo"
                 height="80" width="80">
         </div>

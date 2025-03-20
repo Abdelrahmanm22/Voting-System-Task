@@ -19,8 +19,10 @@ class UserService
         return $this->_userRepository->create($data);
     }
     //this function get all approved users exclude the authenticated user
-    public function getApprovedUsers() {
-        return $this->_userRepository->findApprovedUsers()->where('id', '!=', auth()->id());
+    public function getApprovedUsers($perPage = 9) {
+        return $this->_userRepository->findApprovedUsers()
+            ->where('id', '!=', auth()->id())
+            ->paginate($perPage);
     }
     public function getAllNonAdminUsers()
     {

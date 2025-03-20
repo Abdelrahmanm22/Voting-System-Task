@@ -17,9 +17,10 @@
                 <img src="{{URL::asset('front/assets/img/logo-light.png')}}" alt="logo" height="50">
             </a>
             <div class="ms-auto">
-                <button class="btn btn-outline-custom" type="button">
-                    Logout
-                </button>
+                <form action="{{ route('logout') }}" method="POST">
+                    @csrf
+                    <button class="btn btn-outline-custom" type="submit">Logout</button>
+                </form>
             </div>
         </div>
     </nav>
@@ -29,51 +30,36 @@
     <div class="content">
         <div class="container my-5">
         <h1 class="text-center mb-4">Vote for Your Candidate</h1>
+            @if (session('success'))
+                <div class="alert alert-success">{{ session('success') }}</div>
+            @endif
+            @if (session('error'))
+                <div class="alert alert-danger">{{ session('error') }}</div>
+            @endif
         <div class="row row-cols-1 row-cols-md-3">
-            <div class="col">
-                <div class="card candidate-card">
-                    <img src="{{URL::asset('front/assets/img/abdelrahman.jpg')}}" class="card-img-top candidate-img" alt="Candidate">
-                    <div class="card-body">
-                        <h5 class="card-title text-center">Abdo</h5>
-                        <button class="btn btn-primary w-100">Vote</button>
+            @forelse($candidates as $candidate)
+                <div class="col">
+                    <div class="card candidate-card">
+                        <img src="{{URL::asset('Uploads/Users/'.$candidate->photo)}}" class="card-img-top candidate-img" alt="{{ $candidate->name }}">
+                        <div class="card-body">
+                            <h5 class="card-title text-center">{{ $candidate->name }}</h5>
+                            <form action="{{ route('vote.submit', $candidate->id) }}" method="POST">
+                                @csrf
+                                <button type="submit" class="btn btn-primary w-100">Vote</button>
+                            </form>
+                        </div>
                     </div>
                 </div>
-            </div>
-
-            <div class="col">
-                <div class="card candidate-card">
-                    <img src="{{URL::asset('front/assets/img/abdelrahman.jpg')}}" class="card-img-top candidate-img" alt="Candidate">
-                    <div class="card-body text-center">
-                        <h5 class="card-title">Abdo</h5>
-                        <button class="btn btn-primary w-100">Vote</button>
-                    </div>
+            @empty
+                <div class="col-12 text-center">
+                    <p>No candidates available for voting at this time.</p>
                 </div>
-            </div>
-
-            <div class="col">
-                <div class="card candidate-card">
-                    <img src="{{URL::asset('front/assets/img/abdelrahman.jpg')}}" class="card-img-top candidate-img" alt="Candidate">
-                    <div class="card-body text-center">
-                        <h5 class="card-title">Abdo</h5>
-                        <button class="btn btn-primary w-100">Vote</button>
-                    </div>
-                </div>
-            </div>
+            @endforelse
         </div>
         <!-- Pagination -->
-        <nav aria-label="Page navigation" class="mt-4">
-            <ul class="pagination justify-content-center">
-                <li class="page-item disabled">
-                    <a class="page-link">Previous</a>
-                </li>
-                <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                <li class="page-item">
-                    <a class="page-link" href="#">Next</a>
-                </li>
-            </ul>
-        </nav>
+            <div class="mt-4">
+                {{ $candidates->links() }}
+            </div>
     </div>
     </div>
 
@@ -83,7 +69,7 @@
     <footer class="footer bg-dark text-white text-center py-3">
         <div class="container">
             <p class="mb-0">© 2025 Orevan Voting System. All rights reserved.</p>
-            <p class="mb-0">Contact us: info@votingsystem.com | Terms & Privacy</p>
+            <p class="mb-0">Contact us: info@orevan.com | Terms & Privacy</p>
         </div>
     </footer>
 </div>

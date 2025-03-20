@@ -16,7 +16,7 @@ class UserRepository implements UserRepositoryInterface
         return User::find($id);
     }
     public function findApprovedUsers() {
-        return User::where('status', 'approved')->get();
+        return User::where('status', 'approved');
     }
     public function getAllNonAdminUsers()
     {

@@ -2,6 +2,7 @@
 
 namespace App\Http;
 
+use App\Http\Middleware\Web\CheckUserApproved;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
 class Kernel extends HttpKernel
@@ -67,5 +68,6 @@ class Kernel extends HttpKernel
         'jwt.verify' => \App\Http\Middleware\JwtMiddleware::class,
         'check.approved' => \App\Http\Middleware\CheckUserApproved::class,
         'admin' => \App\Http\Middleware\AdminMiddleware::class,
+        'web.check.approved'=>CheckUserApproved::class,
     ];
 }
